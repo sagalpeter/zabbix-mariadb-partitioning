@@ -111,7 +111,7 @@ BEGIN
     DECLARE KEEP_HISTORY_TMP INT;
     DECLARE KEEP_HISTORY_BEFORE INT;
     DECLARE DONE INT DEFAULT 0;
-    DECLARE get_partitions CURSOR FOR SELECT p.table_name, p.partition_name, LTRIM(RTRIM(p.partition_description)), mp.period, mp.keep_history FROM information_schema.partitions p JOIN manage_partitions mp ON mp.tablename = p.table_name WHERE p.table_schema = IN_SCHEMANAME ORDER BY p.table_name, p.subpartition_ordinal_position;
+    DECLARE get_partitions CURSOR FOR SELECT p.table_name, p.partition_name, LTRIM(RTRIM(p.partition_description)), mp.period, mp.keep_history FROM information_schema.partitions p JOIN manage_partitions mp ON mp.tablename = p.table_name WHERE p.table_schema = IN_SCHEMANAME AND LTRIM(RTRIM(p.partition_description)) <> 'MAXVALUE' ORDER BY p.table_name, p.subpartition_ordinal_position;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
  
 OPEN get_partitions;
